@@ -13,12 +13,19 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
+        Schema::defaultStringLength(191);
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('username')->unique()->nullable()->comment('用户名');
+            $table->string('nickname')->nullable()->comment('昵称');
+            $table->tinyInteger('sex')->default(0)->comment('性别(1 男 2 女 0 保密)');
+            $table->char('phone', 12)->unique()->nullable()->comment('手机');
+            $table->string('email')->unique()->nullable()->comment('邮箱');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('photo')->nullable()->comment('头像');
+            $table->string('password')->comment('密码');
+            $table->text('desc')->nullable()->comment('简介/歇后语');
+            $table->tinyInteger('status')->default(1)->comment('状态(1 正常 2 冻结)');
             $table->rememberToken();
             $table->timestamps();
         });
